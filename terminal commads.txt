@@ -1,0 +1,360 @@
+logout:
+	sudo pkill -u username
+
+apagar ahora:
+	shutdown -h now
+
+apagado planificado:
+	shutdown -h 10:30 &
+
+reiniciar: 
+	shutdown -r now
+
+editar el archivo de superusuarios para a�adir, quitar o crear nuevos superusuarios
+	visudo
+
+interface para el manejo del sistema de paquetes (instalar, desinstalar, purgar, buscar, etc)
+	apt-get install nombresoftware
+	apt-get update (actualizar lista de paquetes)
+	apt-get upgrade (actualizar paquetes en lista)
+	apt-get remove 
+	apt-get purge
+	apt-get autoremove
+	apt-get search
+
+
+
+
+CONFIGURACION WIFI: 
+
+preguntar por la direccion ip a la que esta conectada la raspberry en las diferentes interfaces:
+	ip addr
+
+preguntar por la direccion ip wifi:
+	ip addr list wlan0
+
+scanear las redes WIFI disponibles:
+	iwlist wlan0 scan
+	sudo iwlist scan | lessG
+
+a�adir datos de conexion inalambrica:
+	wpa-supplicant (editar con nano o leafpad)
+
+generar un fichero encriptado con los datos de conexion inalambrica:
+	wpa_passphrase
+
+mostrar informacion acerca del estado actual de conexion:
+	ifconfig
+	iwconfig
+
+verificar si la conexion inalambrica se ha establecido correctamente.
+	ifconfig wlan0
+
+mostrar la direccion ip asociada con el dispositivo:
+	hostname -I
+
+reinciar servicio DHCP:
+	sudo systemctl restart dhcpcd
+
+habilitar manualmente el servicio DCHCP:
+	systemctl enable dhcpcd
+
+ver informacion de router conectado a la raspberry via ethernet o wifi
+	route -ne
+	cat /etc/resolv.conf
+	sudo nano /etc/dhcpcd.conf
+	ping www.google.com
+	
+
+
+
+CONFIGURACION SSH y VNC:
+
+arrancar o empezar el servicio SSH (en caso de no funcionar):
+	systemctl enable ssh
+	systemctl start ssh
+
+cambiar usuarios que pueden acceder a la RasPi via ssh:
+	sudo nano /etc/ssh/sshd_config
+	AllowUsers edward andrew charles anne
+	DenyUsers harry william	
+
+reinciar los servicios sshd
+	sudo systemctl restart ssh
+
+instalar/actualizar servicio VNC:
+	sudo apt-get update
+	sudo apt-get install realvnc-vnc-server- realvnc-vnc-viewer
+	sudo apt-get install xrdp (servicio de escritorio remoto)
+
+habilitar servicio VNC:
+	sudo raspi-config
+	interacing options, VNC>yes (navegar por el menu de configuracion)
+	
+
+
+
+
+GESTION DE USUARIOS Y GRUPOS: (desde consola):
+
+cambiar contrase�a de usuario:
+	passwd
+
+crear un usuario nuevo:
+	sudo adduser nombreusuario
+
+a�adir usuario al grupo sudo o cualquiera:
+	sudo adduser nombreusuario sudo
+
+comprobar los permisos de acceso del usuario:
+	sudo su
+
+eliminar usuarios:
+	sudo deluser pi
+
+elminar usuarios con sus carpetas incluidas:
+	sudo deluser -remove-home pi
+
+forzar pedido de contras�ea a comandos sudo:
+	sudo nano /etc/sudoers.d/010_pi-nopasswd
+
+volver superusuario un usuario comun:
+	sudo usermod -aG sudo usuario
+	
+
+
+
+SEGURIDAD: 
+
+actualizar los servicios de seguridad diariamente:
+	apt install openssh-server
+
+cambiar usuarios que pueden acceder a la RasPi via ssh:
+	sudo nano /etc/ssh/sshd_config
+	AllowUsers edward andrew charles anne
+	DenyUsers harry william	
+
+instalar a firewall:
+	sudo apt install ufw
+
+habilitar firewall:
+	sudo ufw enable
+
+deshabilitar firewall:
+	sudo ufw disable
+
+permitir el acceso a algun puerto en particular:
+	sudo ufw allow 22
+	sudo ufw allow 22/tcp (especifica tipo de servicio)
+
+denegar el acceso a algun puerto en particualr:
+	sudo ufw deny 22
+	sudo ufw deny 22/tcp (especifica tipo de servicio)
+
+permitir la comunicacion con servicios ssh:
+	sudo ufw allow ssh
+
+listar estado de las configuraciones del firwall:
+	sud ufw status
+
+
+
+
+
+GESTION DE DIRECTORIOS Y FICHEROS: (desde consola):
+
+ruta actual donde nos encontramos:
+	pwd
+
+desplegar lista de directorios desde la raiz:
+	ls
+	ls-l #detailed, is it a directory? d
+	ls-a
+
+ir a carpeta raiz: 
+	cd
+
+posicionarse sobre un directorio especifico:
+	cd /home/altarians/documentos
+
+crear nueva carpeta o directorio:
+	mkdir nombrecarpeta
+
+crear dos o mas carpetas al mismo tiempo:
+	mkdir nombrecarpeta1 nombrearpeta2
+
+borrar un directorio o carpeta con su contenido:
+	rmdir nombrecarpeta #works if the dir is empty.
+	rm -r nombrecarpeta
+
+crear un nuevo fichero vacio:
+	touch nombre.txt
+
+borrar un archivo o fichero existente:
+	rm nombrearchivo.txt
+
+mover fichero origen a un directorio destino:
+	mv file /home/pi/destino(directory)
+
+abrir un archivo texto en "nano", el editor de textos de linux:
+	nano prueba.txt 
+	cat testfile #prints the file on the terminal
+	first testfile #prints the first 10 lines
+	last testfile #prints the last 10 lines
+	head testfile
+	tail testfile
+	leafpad prueba.txt
+	geany prueba.c
+
+copiar archivos y carpetas:
+	cp old_name new_name
+	cp name destiny
+
+Read(r), Write(w), Execute(e)
+
+#Root has the highest permission.
+
+PROGRAMACION EN C (desde consola):
+
+
+What proccesses are currently being executed:
+
+	ps a
+	------------------------------------
+	PID TTY STAT TIME COMMAND
+	 +   +   +     +     +
+	------------------------------------
+	kill #to kill a process
+
+
+Starting the GUI for Raspbian
+	startx #starts the graphic user interface(we dont need it in this case)
+
+
+
+
+compilar codigo con GNU make:
+	make nombrefichero
+
+ejecutar programa .c:
+	./hola
+
+inicializar biblioteca con la numeracion de pines normal:
+	wiringPiSetupGpio()
+	gpioInitialise()
+
+configura un pin como salida: 
+	pinMode(pin, OUTPUT)
+	gpioSetMode(pin, OUTPUT)
+
+configura un pin como entrada:
+	pinMode(pin, INPUT)
+	gpioSetMode(pin, INPUT)
+
+saca un valor por un pin: 
+	digitalWrite(pin,v)
+	gpioWrite(pin, v)
+
+lee un pin digital:
+	digitalRead(pin)
+	gpioDelay(1000)
+
+configurar un pull down en un pin:
+	pullUpDnControl(pin_ PUD_DOWN)
+
+configurar un pull Up en un pin:
+	pullUpDnControl(pin_ PUD_UP)
+
+
+
+retardo de un numero de milisegundos:
+	delay(msec)
+
+
+
+
+GPIO SECTION:
+
+instalacicon de repositorios GPIO:
+	sudo apt-get python-rpi.gpio
+
+	alternativa:
+	wget 'http://downloads.sourceforge.net/project/raspberry-gpio-python/RPi.GPIO-0.5.4.tar.gz'
+	tar zxvf RPi.GPIO-0.5.4.tar.gz
+	cd RPi.GPIO-0.5.4/
+	sudo apt-get install python-dev
+	sudo python setup.py install
+
+estado y configuracion de los pines GPIO:
+	gpio readall
+
+abrir el idle3 para programar en python:
+	sudo idle3
+
+	alternativa: 
+	sudo nano blink.py
+
+iniciar puertos GPIO:
+	RPI.GPIO as GPIO
+
+preguntar por la revison de la raspverry:
+	GPIO.RPI_REVISION
+
+importar libreria para usar los puertos GPIO (IDLE):
+	import RPi.GPIO as GPIO
+
+importar libreria de tiempo para retardos (IDLE):
+	import time
+	from time import sleep
+
+instruccion para que los pines fisicos de la tarjeta coincida con la enumaeracion de la libreria (IDLE):
+	GPIO.setmode(GPIO.BOARD)
+
+configurar puertos (pines GPIO) como entradas o salidas (IDLE):
+	GPIO.setup(11, GPIO.OUT)
+
+configurar puertos (pines GPIO) como entradas o salidas (terminal):
+	gpio -g mode 18 out
+	gpio -g mode 18 in
+
+configurar puertos (pines GPIO) como salidas PWM (terminal):
+	gpio -g mode 18 pwm
+
+configurar salida pwm en modo mark and space (terminal):
+	gpio -g pwm-ms
+
+configurar rango salida pwm (terminal):
+	gpio pwmr 1024
+
+configurar divisor salida pwm (terminal):
+	gpio pwmc 390
+
+cambiar valor de salida pwm (terminal):
+	gpio -g pwm 18 52
+	
+
+activar resistencias de pull-up para puertos gpio (terminal):
+	gpio -g mode 23 up
+
+control de los puertos GPIO (IDLE):
+	GPIO.output
+	GPIO.input
+
+control de los puertos GPIO (terminal):
+	gpio -g write 18 1
+	gpio -g write 18 0
+	gpio -g read 23
+
+instruccion para llamar a la rutina de tiempos o delays (IDLE):
+	time.sleep()
+
+evitar cortos en los puertos GPIO:
+	GPIO.cleanup()
+
+comando para ejecutar los ejercicios por terminal:
+	sudo python nombreejercicio.py
+
+
+
+
+

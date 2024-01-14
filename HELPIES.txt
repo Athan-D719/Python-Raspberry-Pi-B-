@@ -1,0 +1,83 @@
+GPIO: General Purpose Input Output
+
+Raspberry Pi B+(features):
+	-Broadcom BCM2837 SoC
+	   -1.4GHz, 1Gb SRAM
+	-QuadCore
+	-40 GPIO pins
+	-4 USB ports
+	   -only 2 on thhe RBP B
+	-Micro SD card slot
+	   -full SD card slot on RBP B
+	-Bluethooth 4.2/BLE
+	-Integrated Wi-Fi
+	-Power over Ethernet (PoE)
+################################################################################################################
+ARM Processors:
+ -ARM licenses
+ -intellectual property (to build)
+ #ARM Processors are the core of most IoT devices.
+ -Silicon vendors build
+ System-on-chip(SoC) Designs using ARM IP
+ 15+ silicon vendors use ARM
+
+RBP vs Arduino:
+	-more resolution x64 to x8
+	-more memory inclusing flash memory and SD
+	-faster even with the slow down of the OS
+	-lower IO voltages (3.3v)
+	-RBP may reboot if it draws too much power from
+
+
+INTERNET OF THINGS: 'IoT', RBP can be use as an IoT device
+NOOBS = New Out-Of-Box Software.
+####################################################################################################################
+Speedbiting: overclocking tests to see its response to a max.
+########################################################################################################################
+Dont know what the command does:
+-Command window:
+	man command : man pwd (will say what it does)
+#####################################################################################################################
+PIN PROTOCOLS:
++I2C: Serial communication protocol generally use between chips or devices that could SHARE A CLOCK
+      SYNCRONUS PROTOCOL(devices to be close enough---same board)
+      +SDA: Sends the data.
+      +SCL: Where the clock gets sent.
+      #restricted by distance but makes it a lot faster
+      #THIS TWO LINES CAN BE CONNECTED WITH ANOTHER RBP SO THAY CAN COMMUNICATE(with the appropiate code).
+
++SPI: Serial Parallel Interface
+      +MOSI:'Mater Out Slave In' - directional ->
+      +MISO: 'Master In Slave Out' - directional <-
+      +_SCLK: Clock that all the devices will share
+      +CE0_N: CHIP ENABLE[0] \	
+      (N stands for a pull down)  connected to the slaves or masters.
+      +CE1_N: CHIP ENABLE[1] /
+	#UARTH not clocked
+####################################################################################################################
+EXECUTING PROGRAM:
+sudo python myprog.py
+
+GETTING Tkinter:
+apt-get install python3-tk
+
+GETTING RPi.GPIO:
+apt-get install rpi.gpio
+
+######################################################################################################################
+GPIO Library:
+	import Rpi.GPIO as GPIO
+	GPIO.setup(13, GPIO.OUT) #IT'S AN OUTPUT
+	GPIO.output(13, True) #ON
+PWM: #not reliable since the OS slows thing down.
+	pwm_obj = GPIO.PWM(18, 400) #pin, frequency
+	pwm_obj.start(100) #duty cycle
+	pwm_obj.ChangeDutyCycle(50) 
+##########################################################################################################################
+GUI so that the user can interact with the program:
+	+widgets: user interact, buttons, menus, sliders...
+	+relating events with a function, like sliding something.
+	
+	Tkinter Library:
+		+provides widgets
+		+canvas widgets to be be drawn 
